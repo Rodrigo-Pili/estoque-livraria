@@ -1,0 +1,117 @@
+.library__content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.library__content__left {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    padding: 20px;
+    border: 1px solid #000;
+    margin: 20px;
+    height: 140px;
+}
+
+.library__content__left input{
+    margin-bottom: 15px;
+}
+
+.library__content__left button{
+    width: 30%;
+    align-self: flex-end;
+    background: #fff;
+    border: 1px solid #707070;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.library__content__center{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    padding: 20px;
+    border: 1px solid #000;
+    margin: 20px;
+}
+
+
+.library__content__center__top{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.library__content__center__middle{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 15px 0;
+}
+
+.library__content__center__mid{
+    margin-bottom: 15px;
+}
+
+.library__content__center__mid input {
+    border: none;
+    border-bottom: 1px solid #000;
+    width: 40%;
+}
+
+.library__content__center__mid button{
+    width: 20%;
+}
+
+.library__content__center__bottom {
+    padding-top: 10px;
+    border-top: 1px dashed #000;
+}
+
+.library__content__center__bottom input{
+    width: 15%;
+    height: 20px;
+}
+
+.library__content__center__bottom__next{
+    font-weight: bold;
+}
+
+.library__content__right {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    padding: 20px;
+    border: 1px solid #000;
+    margin: 20px;
+    height: 140px;
+}
+
+.library__content__right input{
+    margin-bottom: 15px;
+}
+
+.library__content__right__btn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.library__content__right__btn button{
+    width: 30%;
+    align-self: flex-end;
+    background: #fff;
+    border: 1px solid #707070;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+button {
+    width: 16%;
+    align-self: flex-end;
+    background: #fff;
+    border: 1px solid #707070;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}

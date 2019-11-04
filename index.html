@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <link href="./reset.css" rel="stylesheet" type="text/css" />
+    <link href="./index.css" rel="stylesheet" type="text/css" />
+    <title>Livraria PDE</title>
+</head>
+
+<body class="home">
+    <div class="library">
+        <div class="library__content">
+            <div class="library__content__left">
+                <p class="library__content__left__text">Número do Funcionário:</p>
+                <input type="number" class="library__content__left__number" />
+                <p class="library__content__left__text">Senha:</p>
+                <input type="password" class="library__content__left__password" />
+                <button class="library__content__left__button">Autorizar</button>
+            </div>
+            <div class="library__content__center">
+                <div class="library__content__center__top">
+                    <p class="library__content__center__top__number">Número funcionário: <strong>_333_</strong></p>
+                    <p class="library__content__center__top__date">Data: <strong>_25/09/1997_</strong></p>
+                </div>
+                <p class="library__content__center__state">Estado: <strong id="estado">Teste</strong></p>
+                <div class="library__content__center__middle">
+                    <p class="library__content__center__middle__text">ISBN:</p>
+                    <input type="number" class="library__content__center__middle__number" />
+                    <p class="library__content__center__middle__text">Título:</p>
+                    <input type="text" class="library__content__center__middle__title" />
+                </div>
+                <div class="library__content__center__mid">
+                    <p class="library__content__center__mid__text">Autor</p>
+                    <input type="text" class="library__content__center__mid__author" />
+                    <button class="library__content__center__mid__register">Acrescentar</button>
+                    <button class="library__content__center__mid__search">Buscar</button>
+                </div>
+                <div class="library__content__center__bottom">
+                    <p class="library__content__center__bottom__text">Total:</p>
+                    <input type="number" class="library__content__center__bottom__total" />
+                    <button id="cadastrar" class="library__content__center__bottom__register">Cadastrar</button>
+                    <button id="suspender" class="library__content__center__bottom__suspend">Suspender</button>
+                    <button id="continuar" class="library__content__center__bottom__continue">Continuar</button>
+                    <button id="cancelar" class="library__content__center__bottom__close">Cancelar</button>
+                    <button id="proximo" class="library__content__center__bottom__next">Próximo</button>
+                </div>
+            </div>
+            <div class="library__content__right">
+                <p class="library__content__right__text">CPF:</p>
+                <input type="number" class="library__content__cpf" />
+                <p class="library__content__right__text">Nome:</p>
+                <input type="text" class="library__content__name" />
+                <div class="library__content__right__btn">
+                    <button class="library__content__right__btn__search">Buscar</button>
+                    <button class="library__content__right__btn__register">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="dist/main.js"></script>
+
+</html>
