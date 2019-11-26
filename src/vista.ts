@@ -16,6 +16,7 @@ export namespace vista {
         buscarBtn: HTMLButtonElement;
         buscarAutorBtn: HTMLButtonElement;
         cadastrarAutorBtn: HTMLButtonElement;
+        voltarPrincipalBtn:  HTMLButtonElement;
 
         definirBotao(
             ref: string,
@@ -88,10 +89,17 @@ export namespace vista {
 
             this.cadastrarAutorBtn = this.definirBotao("cadastrarAutor",this.cadastrarAutorBtn, this.cadastrarAutor);
             this.habilitarCadastrarAutor(false);
+
+            this.voltarPrincipalBtn = this.definirBotao("voltar-principal",this.voltarPrincipalBtn, this.voltarPrincipal);
+            this.habilitarVoltarPrincipal(false);
         }
 
         cadastrar = () => {
             this.cadastro.cadastrar();
+        }
+
+        voltarPrincipal = () => {
+            this.cadastro.voltarPrincipal();
         }
 
         buscar = () => {
@@ -152,6 +160,10 @@ export namespace vista {
 
         habilitarBuscar(sim:boolean) {
             this.buscarBtn.disabled = !sim;
+        }
+
+        habilitarVoltarPrincipal(sim:boolean) {
+            this.voltarPrincipalBtn.disabled = !sim;
         }
 
         habilitarAcrescentar(sim:boolean) {

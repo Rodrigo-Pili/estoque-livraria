@@ -16,29 +16,95 @@ export namespace logica {
         senha: String = "123";
     }
 
-    export class Livro {
-        titulo: String;
-        isbn: Number;
+    export class Estoque {
+        estoque: Array<Livro> = [];
+        qtdLivros: Number;
 
-        public setTitulo(){
-            this.titulo = (<HTMLInputElement>document.getElementById("text-titulo")).value;
-        }
+        public adicionar(livro: Livro) {
+            this.qtdLivros = Number((<HTMLInputElement>document.getElementById("total-livros")).value);
 
-        public setIsbn(){
-            this.isbn = Number ((<HTMLInputElement>document.getElementById("text-isbn")).value);
+            for (let i = 0; i < this.qtdLivros; i++) {
+                this.estoque.push(livro);
+            }
         }
     }
 
-    export class ListaLivrosPendentes{
+    export class ListaAutoresLivro {
+        listaAutoresLivro: Array<Autor>;
+
+        constructor() {
+            this.listaAutoresLivro = new Array<Autor>();
+        }
+
+        get getListaAutoresLivro(): Array<Autor> {
+            return this.listaAutoresLivro;
+        }
+
+        public adicionarNaListaDeAutores(autor: Autor): void {
+            this.listaAutoresLivro.push(autor);
+        }
+    }
+
+    export class Livro {
+        titulo: String;
+        isbn: Number;
+        numeroFuncionario: String;
+        listaAutoresLivro: Array<Autor>;
+
+        public setTitulo() {
+            this.titulo = (<HTMLInputElement>document.getElementById("text-titulo")).value;
+        }
+
+        public setIsbn() {
+            this.isbn = Number((<HTMLInputElement>document.getElementById("text-isbn")).value);
+        }
+
+        public setNumeroFuncionario() {
+            this.numeroFuncionario = (<HTMLInputElement>document.getElementById("numero-funcionario")).value;
+        }
+
+        public setListaAutoresLivro(aux: ListaAutoresLivro) {
+            this.listaAutoresLivro = aux.getListaAutoresLivro;
+        }
+    }
+
+    export class ListaLivrosPendentes {
         livrosPendentes: Array<Livro> = [];
         livro: Livro;
 
-        public adicionaLivro(){
+        public adicionaLivro() {
             this.livro = new Livro();
             this.livro.setTitulo();
             this.livro.setIsbn();
 
             this.livrosPendentes.push(this.livro);
+        }
+    }
+
+    export class Autor {
+        cpf: String;
+        nome: String;
+
+        public setCpf() {
+            this.cpf = (<HTMLInputElement>document.getElementById("cpf")).value;
+        }
+
+        public setNome() {
+            this.nome = (<HTMLInputElement>document.getElementById("nome")).value;
+        }
+    }
+
+    export class ListaAutor {
+
+        listaAutor: Array<Autor> = new Array<Autor>();
+        autor: Autor;
+
+        public adicionarAutor() {
+            this.autor = new Autor();
+            this.autor.setCpf();
+            this.autor.setNome();
+
+            this.listaAutor.push(this.autor);
         }
     }
 
@@ -51,10 +117,18 @@ export namespace logica {
         isbn: HTMLInputElement = <HTMLInputElement>document.getElementById("text-isbn");
         inputNumFunc: HTMLInputElement = (<HTMLInputElement>document.getElementById("login"));
         inputSenhaFunc: HTMLInputElement = (<HTMLInputElement>document.getElementById("senha"));
+        inputCpfAutor: HTMLInputElement = (<HTMLInputElement>document.getElementById("cpf"));
+        inputNomeAutor: HTMLInputElement = (<HTMLInputElement>document.getElementById("nome"));
         textNumFunc: String;
         textSenhaFunc: String;
         funcionario: Funcionario = new Funcionario();
         elementoNumeroFuncionario: HTMLInputElement;
+        listaAutor: ListaAutor = new ListaAutor();
+        nomeAutor: HTMLInputElement = (<HTMLInputElement>document.getElementById("inputNomeAutor"));
+        estoque: Estoque = new Estoque();
+        livro: Livro;
+        listaAutoresLivroClasse: ListaAutoresLivro;
+        totalLivros: HTMLInputElement = (<HTMLInputElement>document.getElementById("total-livros"));
 
         constructor() {
             this.n = 0;
@@ -65,15 +139,15 @@ export namespace logica {
             this.vista = v;
         }
 
-        public autorizar(){
-            this.textNumFunc =  this.inputNumFunc.value;
-            this.textSenhaFunc =  this.inputSenhaFunc.value;
-            
-            if(this.textNumFunc === this.funcionario.numFunc && this.textSenhaFunc === this.funcionario.senha){
-                
+        public autorizar() {
+            this.textNumFunc = this.inputNumFunc.value;
+            this.textSenhaFunc = this.inputSenhaFunc.value;
+
+            if (this.textNumFunc === this.funcionario.numFunc && this.textSenhaFunc === this.funcionario.senha) {
+
                 this.elementoNumeroFuncionario = <HTMLInputElement>document.getElementById("numero-funcionario");
-                
-                this.elementoNumeroFuncionario.value = String (this.funcionario.numFunc);
+
+                this.elementoNumeroFuncionario.value = String(this.funcionario.numFunc);
 
                 this.estado = Estado.INICIADO;
                 this.vista.mostrar("INICIADO");
@@ -87,20 +161,35 @@ export namespace logica {
                 this.vista.habilitarProximo(true);
                 this.vista.habilitarPendencia(true);
             }
-            
+
             this.inputNumFunc.value = "";
             this.inputSenhaFunc.value = "";
         }
-        
+
         public cadastrar() {
             if (this.estado == 1) {
+
+                this.livro = new Livro();
+                this.livro.setIsbn();
+                this.livro.setNumeroFuncionario();
+                this.livro.setTitulo();
+                this.livro.setListaAutoresLivro(this.listaAutoresLivroClasse);
+
+                this.estoque.adicionar(this.livro);
+
                 this.estado = Estado.ENCERRADO;
                 this.vista.habilitarContinuar(false);
                 this.vista.habilitarCadastrar(false);
                 this.vista.habilitarSuspender(false);
                 this.vista.habilitarCancelar(false);
                 this.vista.mostrar("ENCERRADO");
-                console.log(this.n);
+
+                console.log(this.estoque);
+
+                this.isbn.value = "";
+                this.inputTitulo.value = "";
+                this.nomeAutor.value = "";
+                this.totalLivros.value = "1";
             }
         }
         public suspender() {
@@ -133,7 +222,7 @@ export namespace logica {
             console.log(this.n);
         }
         public cancelar() {
-            if(this.estado != 7){
+            if (this.estado != 7) {
                 this.estado = Estado.CANCELADO;
                 this.vista.habilitarCadastrar(false);
                 this.vista.habilitarSuspender(false);
@@ -160,19 +249,14 @@ export namespace logica {
 
                 this.livrosPendentes.adicionaLivro();
 
-                this.livrosPendentes.livrosPendentes.forEach(livro => {
-                    console.log(livro);
-                });
-                
                 this.n++;
-                console.log(this.n);
                 alert('Você tem ' + this.n + ' livros pendentes');
                 this.estado = Estado.INICIADO;
                 this.vista.mostrar("INICIADO");
 
                 this.inputTitulo.value = "";
                 this.isbn.value = "";
-            } else if (this.estado == 7){
+            } else if (this.estado == 7) {
                 this.vista.habilitarCadastrar(true);
                 this.vista.habilitarSuspender(true);
                 this.vista.habilitarContinuar(false);
@@ -186,7 +270,7 @@ export namespace logica {
                 alert('Você atingiu o número máximo de livros pendentes!');
             }
         }
-        
+
         public buscar() {
             this.vista.habilitarAcrescentar(false);
             this.vista.habilitarBuscar(false);
@@ -197,27 +281,59 @@ export namespace logica {
             this.vista.habilitarPendencia(false);
             this.vista.habilitarBuscarAutor(true);
             this.vista.habilitarCadastrarAutor(true);
+            this.vista.habilitarVoltarPrincipal(true);
         }
 
         public pendencia() {
-            
+
         }
 
         public acrescentar() {
-            
+            this.listaAutoresLivroClasse = new ListaAutoresLivro();
+
+                this.listaAutor.listaAutor.forEach(autor => {
+                    if (autor.nome === this.nomeAutor.value) {
+                        this.listaAutoresLivroClasse.adicionarNaListaDeAutores(autor);
+                        alert(autor.nome + " adicionado como autor do livro com sucesso!");
+                    } else {
+                        alert("Autor não encontrado!");
+                    }
+                });
         }
 
         public popupCancelarBtn() {
-            
+
         }
 
-
         public buscarAutor() {
-            
+
         }
 
         public cadastrarAutor() {
-            
+            this.listaAutor.adicionarAutor();
+
+            this.listaAutor.listaAutor.forEach(autor => {
+                console.log(autor);
+            });
+
+            console.log(this.listaAutor.listaAutor.length);
+
+            this.inputCpfAutor.value = "321";
+            this.inputNomeAutor.value = "Rodrigo";
+        }
+
+        public voltarPrincipal() {
+            this.vista.habilitarAutorizar(false);
+            this.vista.habilitarAcrescentar(true);
+            this.vista.habilitarBuscar(true);
+            this.vista.habilitarCadastrar(true);
+            this.vista.habilitarSuspender(true);
+            this.vista.habilitarCancelar(true);
+            this.vista.habilitarProximo(true);
+            this.vista.habilitarPendencia(true);
+            this.vista.habilitarBuscarAutor(false);
+            this.vista.habilitarCadastrarAutor(false);
+            this.vista.habilitarVoltarPrincipal(false);
         }
     }
 }
