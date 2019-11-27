@@ -162,17 +162,39 @@ button {
     border-bottom: 1px solid #CCC;
 }
 
-.popup__content__list p {
+.popup__content__list ul {
+    overflow: auto;
+    max-height: 250px;
+    padding-right: 10px;
+}
+
+.popup__content__list ul li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #707070;
+}
+
+.popup__content__list ul li:first-child {
+    border: none;
+}
+
+.popup__content__list ul li:first-child p {
+    color: rgba(65, 105, 225, 1);
     font-size: 22px;
+}
+
+.popup__content__list p {
+    font-size: 14px;
     font-weight: 900;
     color: #454545;
     font-family: "Lato", sans-serif;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
+    padding: 10px 0;
 }
 
 .popup__content__btns {
     display: flex;
+    margin-top: 5px;
 }
 
 .popup__content__btns button {

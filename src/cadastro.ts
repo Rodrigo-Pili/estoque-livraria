@@ -72,12 +72,12 @@ export namespace logica {
         livrosPendentes: Array<Livro> = [];
         livro: Livro;
 
-        public adicionaLivro() {
-            this.livro = new Livro();
-            this.livro.setTitulo();
-            this.livro.setIsbn();
-
-            this.livrosPendentes.push(this.livro);
+        public adicionaLivro(livro: Livro, aux: ListaAutoresLivro) {
+            livro.setIsbn();
+            livro.setTitulo();
+            livro.setListaAutoresLivro(aux);
+ 
+            this.livrosPendentes.push(livro);
         }
     }
 
@@ -96,7 +96,12 @@ export namespace logica {
 
     export class ListaAutor {
 
-        listaAutor: Array<Autor> = new Array<Autor>();
+        listaAutor: Array<Autor>;
+
+        constructor() {
+            this.listaAutor = new Array<Autor>();
+        }
+
         autor: Autor;
 
         public adicionarAutor() {
@@ -119,6 +124,7 @@ export namespace logica {
         inputSenhaFunc: HTMLInputElement = (<HTMLInputElement>document.getElementById("senha"));
         inputCpfAutor: HTMLInputElement = (<HTMLInputElement>document.getElementById("cpf"));
         inputNomeAutor: HTMLInputElement = (<HTMLInputElement>document.getElementById("nome"));
+        listaLivrosPendentesHtml: HTMLInputElement = (<HTMLInputElement>document.getElementById("lista-livros-pendentes"));
         textNumFunc: String;
         textSenhaFunc: String;
         funcionario: Funcionario = new Funcionario();
@@ -127,8 +133,9 @@ export namespace logica {
         nomeAutor: HTMLInputElement = (<HTMLInputElement>document.getElementById("inputNomeAutor"));
         estoque: Estoque = new Estoque();
         livro: Livro;
-        listaAutoresLivroClasse: ListaAutoresLivro;
+        listaAutoresLivroClasse: ListaAutoresLivro = new ListaAutoresLivro();
         totalLivros: HTMLInputElement = (<HTMLInputElement>document.getElementById("total-livros"));
+        listaAutoresLivro: Array<Autor>;
 
         constructor() {
             this.n = 0;
@@ -184,8 +191,6 @@ export namespace logica {
                 this.vista.habilitarCancelar(false);
                 this.vista.mostrar("ENCERRADO");
 
-                console.log(this.estoque);
-
                 this.isbn.value = "";
                 this.inputTitulo.value = "";
                 this.nomeAutor.value = "";
@@ -209,7 +214,6 @@ export namespace logica {
             this.vista.habilitarCancelar(true);
             this.vista.habilitarProximo(false);
             this.vista.mostrar("SUSPENSO");
-            console.log(this.n);
         }
         public continuar() {
             this.estado = Estado.INICIADO;
@@ -219,7 +223,6 @@ export namespace logica {
             this.vista.habilitarCancelar(true);
             this.vista.habilitarProximo(true);
             this.vista.mostrar("INICIADO");
-            console.log(this.n);
         }
         public cancelar() {
             if (this.estado != 7) {
@@ -230,10 +233,13 @@ export namespace logica {
                 this.vista.habilitarCancelar(false);
                 this.vista.habilitarProximo(true);
                 this.vista.mostrar("CANCELADO");
-                console.log(this.n);
             }
         }
         public proximo() {
+            if ((this.isbn.value) === "" && this.inputTitulo.value === "" && this.nomeAutor.value === "") {
+                alert("Você não pode deixar um livro como pendente sem nenhum campo preenchido!");
+                return;
+            }
             if (this.estado == 6) {
                 //CADASTRAR
                 this.vista.habilitarCadastrar(true);
@@ -246,16 +252,22 @@ export namespace logica {
             } else if ((this.estado == 1) && (this.n < 10)) {
                 //Próximo
                 // adiciona livro na lista
-
-                this.livrosPendentes.adicionaLivro();
+                this.livro = new Livro();
+                this.livrosPendentes.adicionaLivro(this.livro, this.listaAutoresLivroClasse);
 
                 this.n++;
                 alert('Você tem ' + this.n + ' livros pendentes');
                 this.estado = Estado.INICIADO;
                 this.vista.mostrar("INICIADO");
 
-                this.inputTitulo.value = "";
-                this.isbn.value = "";
+                this.listaLivrosPendentesHtml.insertAdjacentHTML('beforeend', "<li id = "+ this.livro.isbn +"><p class='isbn-livro'>" + this.livro.isbn + "</p><p class='titulo-livro'>" + this.livro.titulo + "</p></li>"); 
+                console.log(this.listaLivrosPendentesHtml.value);
+                console.log(this.livro.isbn);
+                console.log(this.livro.titulo);
+                console.log(this.livro.listaAutoresLivro.length);
+                console.log(this.livrosPendentes);
+
+                console.log(this.livro.listaAutoresLivro);
             } else if (this.estado == 7) {
                 this.vista.habilitarCadastrar(true);
                 this.vista.habilitarSuspender(true);
@@ -285,20 +297,17 @@ export namespace logica {
         }
 
         public pendencia() {
-
+            
         }
 
         public acrescentar() {
-            this.listaAutoresLivroClasse = new ListaAutoresLivro();
-
-                this.listaAutor.listaAutor.forEach(autor => {
-                    if (autor.nome === this.nomeAutor.value) {
-                        this.listaAutoresLivroClasse.adicionarNaListaDeAutores(autor);
-                        alert(autor.nome + " adicionado como autor do livro com sucesso!");
-                    } else {
-                        alert("Autor não encontrado!");
-                    }
-                });
+            let indexAutor = this.listaAutor.listaAutor.findIndex(autor => autor.nome === this.nomeAutor.value);
+            if(indexAutor >= 0) {
+                this.listaAutoresLivroClasse.adicionarNaListaDeAutores(this.listaAutor.listaAutor[indexAutor]);
+                alert(this.listaAutor.listaAutor[indexAutor].nome + " adicionado como autor do livro com sucesso!");
+            } else {
+                alert("Autor não encontrado!");
+            }
         }
 
         public popupCancelarBtn() {
@@ -311,12 +320,6 @@ export namespace logica {
 
         public cadastrarAutor() {
             this.listaAutor.adicionarAutor();
-
-            this.listaAutor.listaAutor.forEach(autor => {
-                console.log(autor);
-            });
-
-            console.log(this.listaAutor.listaAutor.length);
 
             this.inputCpfAutor.value = "321";
             this.inputNomeAutor.value = "Rodrigo";
