@@ -14,9 +14,9 @@ export namespace vista {
         popupCancelarBtn: HTMLButtonElement;
         acrescentarBtn: HTMLButtonElement;
         buscarBtn: HTMLButtonElement;
-        buscarAutorBtn: HTMLButtonElement;
         cadastrarAutorBtn: HTMLButtonElement;
-        voltarPrincipalBtn:  HTMLButtonElement;
+        voltarPrincipalBtn: HTMLButtonElement;
+        sairBtn: HTMLButtonElement;
 
         definirBotao(
             ref: string,
@@ -84,18 +84,22 @@ export namespace vista {
             this.autorizarBtn = this.definirBotao("autorizar",this.autorizarBtn, this.autorizar);
             this.habilitarAutorizar(true);
 
-            this.buscarAutorBtn = this.definirBotao("buscarAutor",this.buscarAutorBtn, this.buscarAutor);
-            this.habilitarBuscarAutor(false);
-
             this.cadastrarAutorBtn = this.definirBotao("cadastrarAutor",this.cadastrarAutorBtn, this.cadastrarAutor);
             this.habilitarCadastrarAutor(false);
 
             this.voltarPrincipalBtn = this.definirBotao("voltar-principal",this.voltarPrincipalBtn, this.voltarPrincipal);
             this.habilitarVoltarPrincipal(false);
+
+            this.sairBtn = this.definirBotao("sair",this.sairBtn, this.sair);
+            this.habilitarSair(false);
         }
 
         cadastrar = () => {
             this.cadastro.cadastrar();
+        }
+
+        sair = () => {
+            this.cadastro.sair();
         }
 
         voltarPrincipal = () => {
@@ -104,10 +108,6 @@ export namespace vista {
 
         buscar = () => {
             this.cadastro.buscar();
-        }
-
-        buscarAutor = () => {
-            this.cadastro.buscarAutor();
         }
 
         cadastrarAutor = () => {
@@ -154,12 +154,12 @@ export namespace vista {
             this.cadastrarAutorBtn.disabled = !sim;
         }
 
-        habilitarBuscarAutor(sim:boolean) {
-            this.buscarAutorBtn.disabled = !sim;
-        }
-
         habilitarBuscar(sim:boolean) {
             this.buscarBtn.disabled = !sim;
+        }
+
+        habilitarSair(sim:boolean) {
+            this.sairBtn.disabled = !sim;
         }
 
         habilitarVoltarPrincipal(sim:boolean) {

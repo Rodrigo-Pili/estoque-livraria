@@ -167,6 +167,9 @@ export namespace logica {
                 this.vista.habilitarCancelar(true);
                 this.vista.habilitarProximo(true);
                 this.vista.habilitarPendencia(true);
+                this.vista.habilitarSair(true);
+            }else{
+                alert("login ou senha incorreto, ou usuário não existe");
             }
 
             this.inputNumFunc.value = "";
@@ -174,45 +177,46 @@ export namespace logica {
         }
 
         public cadastrar() {
-            if (this.estado == 1) {
-
+            if(this.isbn.value === "" || this.inputTitulo.value === "" || this.listaAutoresLivroClasse.listaAutoresLivro.length < 1 || Number (this.totalLivros.value) < 1){
+                alert("Todos os campos devem ser preenchidos!");  
+                return;
+            }
                 this.livro = new Livro();
                 this.livro.setIsbn();
                 this.livro.setNumeroFuncionario();
                 this.livro.setTitulo();
                 this.livro.setListaAutoresLivro(this.listaAutoresLivroClasse);
-
+                
                 this.estoque.adicionar(this.livro);
-
+                
                 this.estado = Estado.ENCERRADO;
                 this.vista.habilitarContinuar(false);
                 this.vista.habilitarCadastrar(false);
                 this.vista.habilitarSuspender(false);
                 this.vista.habilitarCancelar(false);
+                this.vista.habilitarAcrescentar(false);
+                this.vista.habilitarBuscar(false);
+                this.vista.habilitarPendencia(false);
                 this.vista.mostrar("ENCERRADO");
+                
+                alert("Livro adicionado com sucesso!" );
 
                 this.isbn.value = "";
                 this.inputTitulo.value = "";
                 this.nomeAutor.value = "";
                 this.totalLivros.value = "1";
-            }
         }
         public suspender() {
-            if (this.n >= 10) {
-                this.estado = Estado.AGUARDANDO;
-                this.vista.mostrar("AGUARDANDO");
-                this.vista.habilitarCadastrar(false);
-                this.vista.habilitarSuspender(false);
-                this.vista.habilitarCancelar(false);
-                this.vista.habilitarProximo(false);
-                return
-            }
             this.estado = Estado.SUSPENSO;
             this.vista.habilitarCadastrar(false);
             this.vista.habilitarSuspender(false);
             this.vista.habilitarContinuar(true);
             this.vista.habilitarCancelar(true);
             this.vista.habilitarProximo(false);
+            this.vista.habilitarPendencia(false);
+            this.vista.habilitarAcrescentar(false);
+            this.vista.habilitarBuscar(false);
+            this.vista.habilitarCancelar(false);
             this.vista.mostrar("SUSPENSO");
         }
         public continuar() {
@@ -222,24 +226,25 @@ export namespace logica {
             this.vista.habilitarContinuar(false);
             this.vista.habilitarCancelar(true);
             this.vista.habilitarProximo(true);
+            this.vista.habilitarAcrescentar(true);
+            this.vista.habilitarBuscar(true);
+            this.vista.habilitarPendencia(true);
             this.vista.mostrar("INICIADO");
         }
         public cancelar() {
-            if (this.estado != 7) {
                 this.estado = Estado.CANCELADO;
                 this.vista.habilitarCadastrar(false);
                 this.vista.habilitarSuspender(false);
                 this.vista.habilitarContinuar(false);
                 this.vista.habilitarCancelar(false);
                 this.vista.habilitarProximo(true);
+                this.vista.habilitarAcrescentar(false);
+                this.vista.habilitarBuscar(false);
+                this.vista.habilitarPendencia(false);
                 this.vista.mostrar("CANCELADO");
-            }
         }
         public proximo() {
-            if ((this.isbn.value) === "" && this.inputTitulo.value === "" && this.nomeAutor.value === "") {
-                alert("Você não pode deixar um livro como pendente sem nenhum campo preenchido!");
-                return;
-            }
+           
             if (this.estado == 6) {
                 //CADASTRAR
                 this.vista.habilitarCadastrar(true);
@@ -247,9 +252,16 @@ export namespace logica {
                 this.vista.habilitarContinuar(false);
                 this.vista.habilitarCancelar(true);
                 this.vista.habilitarProximo(true);
+                this.vista.habilitarAcrescentar(true);
+                this.vista.habilitarBuscar(true);
+                this.vista.habilitarPendencia(true);
                 this.estado = Estado.INICIADO;
                 this.vista.mostrar("INICIADO");
             } else if ((this.estado == 1) && (this.n < 10)) {
+                if (this.isbn.value === "" && this.inputTitulo.value === "" && this.nomeAutor.value === "") {
+                    alert("Você não pode deixar um livro como pendente sem nenhum campo preenchido!");
+                    return;
+                }
                 //Próximo
                 // adiciona livro na lista
                 this.livro = new Livro();
@@ -274,6 +286,9 @@ export namespace logica {
                 this.vista.habilitarContinuar(false);
                 this.vista.habilitarCancelar(true);
                 this.vista.habilitarProximo(true);
+                this.vista.habilitarAcrescentar(true);
+                this.vista.habilitarPendencia(true);
+                this.vista.habilitarBuscar(true);
                 this.estado = Estado.INICIADO;
                 this.vista.mostrar("INICIADO");
             }
@@ -291,9 +306,9 @@ export namespace logica {
             this.vista.habilitarCancelar(false);
             this.vista.habilitarProximo(false);
             this.vista.habilitarPendencia(false);
-            this.vista.habilitarBuscarAutor(true);
             this.vista.habilitarCadastrarAutor(true);
             this.vista.habilitarVoltarPrincipal(true);
+            this.vista.habilitarSair(false);
         }
 
         public pendencia() {
@@ -314,15 +329,33 @@ export namespace logica {
 
         }
 
-        public buscarAutor() {
-
+        public sair() {
+            this.vista.habilitarCadastrar(false);
+            this.vista.habilitarSuspender(false);
+            this.vista.habilitarContinuar(false);
+            this.vista.habilitarCancelar(true);
+            this.vista.habilitarProximo(false);
+            this.vista.habilitarPendencia(false);
+            this.vista.habilitarAcrescentar(false);
+            this.vista.habilitarBuscar(false);
+            this.vista.habilitarCancelar(false);
+            this.vista.habilitarAutorizar(true);
+            this.vista.habilitarSair(false);
+            this.vista.mostrar("");
         }
 
         public cadastrarAutor() {
-            this.listaAutor.adicionarAutor();
+            if(this.inputCpfAutor.value === "" || this.inputNomeAutor.value === ""){
+                alert("Preencha todos o campos!");
+                return;
+            }
 
-            this.inputCpfAutor.value = "321";
-            this.inputNomeAutor.value = "Rodrigo";
+            this.listaAutor.adicionarAutor()
+            
+            alert("Autor " + this.inputNomeAutor.value + " cadstrado com sucesso!");
+
+            this.inputCpfAutor.value = "";
+            this.inputNomeAutor.value = "";
         }
 
         public voltarPrincipal() {
@@ -334,9 +367,9 @@ export namespace logica {
             this.vista.habilitarCancelar(true);
             this.vista.habilitarProximo(true);
             this.vista.habilitarPendencia(true);
-            this.vista.habilitarBuscarAutor(false);
             this.vista.habilitarCadastrarAutor(false);
             this.vista.habilitarVoltarPrincipal(false);
+            this.vista.habilitarSair(true);
         }
     }
 }
